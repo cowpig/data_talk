@@ -23,7 +23,7 @@ headers = [
     "review_text"
 ]
 
-# regexpal to get a regular expression
+# regexpal.com is useful for working out regular expressions
 p = re.compile("(?:beer|review)/.*: (.*)\n?")
 
 # open a subset of the file first to work this expression out
@@ -46,11 +46,11 @@ with open("beeradvocate.tsv", "wb") as f:
     w.writerow(headers)
     w.writerows(beers)
 
-# create a pandas dataframe
+# import the tsv file as a pandas dataframe
 df = pd.read_csv("beeradvocate.tsv", sep="\t")
 df.columns.values
 
-# cast the numerical columns to numbers
+# cast the numerical columns to numbers (useful for vectorization later)
 def cast(df, headers, cast_to):
     for header in headers:
         df[header] = df[header].astype(cast_to)
@@ -67,7 +67,9 @@ counts = df.groupby("beer_name").size()
 counts.median()
 counts.mean()
 
-# filter out the useless ones:
+# filter out the useless ones
+# this takes a while, take some questions
 df = df.groupby('beer_beerId').filter(lambda x: len(x) >= 5)
 len(df)
 
+# next step would be to vectorize the data, using one-hot vectors for categorical strings
