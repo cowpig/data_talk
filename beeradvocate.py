@@ -38,7 +38,7 @@ for i in xrange(len(beers[0])):
     print headers[i], len(s)
     if len(s) <= 15:
         print sorted(list(s))
-    elif i < len(beers)-1:
+    elif i < len(beers[0]) - 1:
         print sorted(list(s))[:5], sorted(list(s))[-5:]
 
 # save the data as tab-separated values
