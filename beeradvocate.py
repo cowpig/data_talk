@@ -54,7 +54,7 @@ df.columns.values
 # cast the numerical columns to numbers (useful for vectorization later)
 def cast(df, headers, cast_to):
     for header in headers:
-        df[header] = df[header].astype(cast_to)
+        df[header] = df.pop(header).astype(cast_to)
 cast(df, ["beer_ABV", "review_appearance", "review_aroma", "review_palate", "review_taste", "review_overall", "review_time"], float)
 
 # now let's load all the beers from the former experiment
@@ -70,8 +70,8 @@ counts.mean()
 
 # filter out the useless ones
 # this takes a while, take some questions
-df = df.groupby('review_profileName').filter(lambda x: len(x) >= 5)
-counts = df2.groupby("review_profileName").size()
+grouped = df.groupby('review_profileName').filter(lambda x: len(x) >= 5)
+counts = grouped.groupby("review_profileName").size()
 counts.median()
 counts.mean()
 
@@ -79,9 +79,6 @@ counts.mean()
 df.plot(x="review_overall", y="beer_ABV"); plt.show()
 # obviously the connectedness is screwing things up
 df.plot(x="review_overall", y="beer_ABV", ls="", marker="x"); plt.show()
-# take a random sample instead
-subsample = random.sample(df.index, 500)
-df.ix[subsample].plot(x="review_overall", y="beer_ABV", ls="", marker="x"); plt.show()
 
 # now we want to create the dataset we're actually going to use:
 # profile_name beer_rating1 beer_rating2 ... beer_ratingN
